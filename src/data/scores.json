@@ -1,0 +1,240 @@
+{
+  "Exam 1": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 1
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 2": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 1
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 3": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 1
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 4": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 2
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 5": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 2
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 6": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 2
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  },
+  "Exam 7": {
+    "scores": {
+      "test1@runsystem.net": {
+        "judge": 1,
+        "submitted": true
+      },
+      "test2@runsystem.net": {
+        "member": 0,
+        "submitted": true,
+        "judge": 2
+      },
+      "test3@runsystem.net": {
+        "interaction": 0,
+        "submitted": true,
+        "member": 3
+      },
+      "test4@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      },
+      "test5@runsystem.net": {
+        "member": 0,
+        "submitted": false
+      },
+      "test6@runsystem.net": {
+        "interaction": 0,
+        "submitted": false
+      },
+      "test7@runsystem.net": {
+        "judge": 0,
+        "submitted": false
+      }
+    }
+  }
+}

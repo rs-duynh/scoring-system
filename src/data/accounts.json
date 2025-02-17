@@ -1,0 +1,5 @@
+[
+    { "email": "test1@runsystem.net", "password": "password1", "role": "admin" },
+    { "email": "test2@runsystem.net", "password": "password2", "role": "bgk" },
+    { "email": "test3@runsystem.net", "password": "password3", "role": "member" }
+  ]

@@ -5,6 +5,7 @@
   "type": "module",
   "proxy": "http://localhost:5000",
   "build": "npm run build",
+  "homepage": "https://gmo-runsystem-scoring.vercel.app",
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
     "@testing-library/dom": "^10.4.0",

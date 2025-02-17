@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "proxy": "http://localhost:5000",
-  "vercel-build": "npm run build",
+  "build": "npm run build",
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
     "@testing-library/dom": "^10.4.0",

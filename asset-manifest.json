@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/scoring-system/static/css/main.df0bff12.css",
+    "main.js": "/scoring-system/static/js/main.88716bb9.js",
+    "static/js/453.69dfc17e.chunk.js": "/scoring-system/static/js/453.69dfc17e.chunk.js",
+    "index.html": "/scoring-system/index.html",
+    "main.df0bff12.css.map": "/scoring-system/static/css/main.df0bff12.css.map",
+    "main.88716bb9.js.map": "/scoring-system/static/js/main.88716bb9.js.map",
+    "453.69dfc17e.chunk.js.map": "/scoring-system/static/js/453.69dfc17e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.df0bff12.css",
+    "static/js/main.88716bb9.js"
+  ]
+}

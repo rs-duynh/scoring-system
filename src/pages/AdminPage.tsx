@@ -1,9 +1,9 @@
 // src/pages/AdminPage.tsx
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { useNavigate } from 'react-router-dom';
-import api from '../utils/axios';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
+import api from "../utils/axios";
 
 interface Score {
   judge?: number;
@@ -27,13 +27,13 @@ const AdminPage = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
   const [scores, setScores] = useState<Scores>({});
-  const [isLocked, setIsLocked] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [, setIsLocked] = useState(false);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     // Kiểm tra quyền truy cập
-    if (!user || (user.role !== 'admin' && user.role !== 'bgk')) {
-      navigate('/login');
+    if (!user || (user.role !== "admin" && user.role !== "bgk")) {
+      navigate("/login");
       return;
     }
 
@@ -44,46 +44,46 @@ const AdminPage = () => {
   const fetchData = async () => {
     try {
       const [scoresRes, statusRes] = await Promise.all([
-        api.get('/api/get-scores'),
-        api.get('/api/scoring-status')
+        api.get("/api/get-scores"),
+        api.get("/api/scoring-status"),
       ]);
-      
+
       setScores(scoresRes.data);
       setIsLocked(statusRes.data.isLocked);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleInteractionScoreChange = (examId: string, value: number) => {
-    setScores(prev => ({
+    setScores((prev) => ({
       ...prev,
       [examId]: {
         ...prev[examId],
-        interactionScore: value
-      }
+        interactionScore: value,
+      },
     }));
   };
 
   const calculateFinalScore = (examData: ExamScores) => {
     // Tính tổng điểm BGK (50%)
     const judgeScores = Object.values(examData.scores)
-      .filter(score => score.judge !== undefined && score.submitted)
-      .map(score => score.judge as number)
+      .filter((score) => score.judge !== undefined && score.submitted)
+      .map((score) => score.judge as number)
       .reduce((a, b) => a + b, 0);
 
     // Tính tổng điểm Member (25%)
     const memberScores = Object.values(examData.scores)
-      .filter(score => score.member !== undefined && score.submitted)
-      .map(score => score.member as number)
+      .filter((score) => score.member !== undefined && score.submitted)
+      .map((score) => score.member as number)
       .reduce((a, b) => a + b, 0);
 
     // Lấy điểm tương tác (25%)
     const interactionScore = examData.interactionScore || 0;
 
-    return (judgeScores * 0.5) + (memberScores * 0.25) + (interactionScore * 0.25);
+    return judgeScores * 0.5 + memberScores * 0.25 + interactionScore * 0.25;
   };
 
   return (
@@ -106,10 +106,14 @@ const AdminPage = () => {
                 {Object.entries(examData.scores).map(([email, score]) => (
                   <tr key={email}>
                     <td className="border p-2">{email}</td>
-                    <td className="border p-2 text-center">{score.judge || '-'}</td>
-                    <td className="border p-2 text-center">{score.member || '-'}</td>
                     <td className="border p-2 text-center">
-                      {score.submitted ? '✓' : '-'}
+                      {score.judge || "-"}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {score.member || "-"}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {score.submitted ? "✓" : "-"}
                     </td>
                   </tr>
                 ))}
@@ -123,7 +127,12 @@ const AdminPage = () => {
                       min="0"
                       max="10"
                       value={examData.interactionScore || 0}
-                      onChange={(e) => handleInteractionScoreChange(examId, Number(e.target.value))}
+                      onChange={(e) =>
+                        handleInteractionScoreChange(
+                          examId,
+                          Number(e.target.value)
+                        )
+                      }
                       className="w-20 p-1 text-center border rounded"
                     />
                   </td>

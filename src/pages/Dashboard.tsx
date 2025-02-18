@@ -5,11 +5,17 @@ import api from "../utils/axios";
 // Thêm style vào phần head của component
 const getRangeColor = (value: number, max: number) => {
   const percentage = (value / max) * 100;
-  if (percentage >= 80) return 'bg-green-500';
-  if (percentage >= 60) return 'bg-blue-500';
-  if (percentage >= 40) return 'bg-yellow-500';
-  if (percentage >= 20) return 'bg-orange-500';
-  return 'bg-red-500';
+  if (percentage >= 100) return "bg-green-900";
+  if (percentage >= 90) return "bg-green-800";
+  if (percentage >= 80) return "bg-green-700";
+  if (percentage >= 70) return "bg-green-600";
+  if (percentage >= 60) return "bg-green-500";
+  if (percentage >= 50) return "bg-green-400";
+  if (percentage >= 40) return "bg-green-300";
+  if (percentage >= 30) return "bg-green-200";
+  if (percentage >= 20) return "bg-green-100";
+  if (percentage >= 10) return "bg-green-0";
+  return "bg-green-0";
 };
 
 // CSS cho range input
@@ -156,20 +162,21 @@ const Dashboard = () => {
   };
 
   const getTeamButtonStyle = (teamId: string) => {
-    const baseStyle = 'w-full px-2 py-1 md:px-4 md:py-2 rounded text-sm md:text-base transition-colors duration-200';
-    
+    const baseStyle =
+      "w-full px-2 py-1 md:px-4 md:py-2 rounded text-sm md:text-base transition-colors duration-200";
+
     if (selectedTeam === teamId) {
       return `${baseStyle} bg-blue-500 text-white`;
     }
-    
+
     if (isTeamFullyScored(teamId)) {
       return `${baseStyle} bg-green-500 text-white`;
     }
-    
+
     if (validationErrors.includes(teamId)) {
       return `${baseStyle} bg-red-100 border-2 border-red-500`;
     }
-    
+
     return `${baseStyle} bg-gray-200`;
   };
 
@@ -193,18 +200,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="10"
                   value={teamScores.branding.uniformity}
-                  onChange={(e) => handleScoreChange('branding', 'uniformity', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.branding.uniformity, 10)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "branding",
+                      "uniformity",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.branding.uniformity,
+                    10
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.branding.uniformity, 10)} 0%,
-                      ${getRangeColor(teamScores.branding.uniformity, 10)} ${(teamScores.branding.uniformity / 10) * 100}%,
+                      ${getRangeColor(teamScores.branding.uniformity, 10)} ${
+                      (teamScores.branding.uniformity / 10) * 100
+                    }%,
                       #E5E7EB ${(teamScores.branding.uniformity / 10) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -218,18 +237,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="10"
                   value={teamScores.branding.props}
-                  onChange={(e) => handleScoreChange('branding', 'props', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.branding.props, 10)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "branding",
+                      "props",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.branding.props,
+                    10
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.branding.props, 10)} 0%,
-                      ${getRangeColor(teamScores.branding.props, 10)} ${(teamScores.branding.props / 10) * 100}%,
+                      ${getRangeColor(teamScores.branding.props, 10)} ${
+                      (teamScores.branding.props / 10) * 100
+                    }%,
                       #E5E7EB ${(teamScores.branding.props / 10) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -253,18 +284,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="10"
                   value={teamScores.content.introduction}
-                  onChange={(e) => handleScoreChange('content', 'introduction', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.content.introduction, 10)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "content",
+                      "introduction",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.content.introduction,
+                    10
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.content.introduction, 10)} 0%,
-                      ${getRangeColor(teamScores.content.introduction, 10)} ${(teamScores.content.introduction / 10) * 100}%,
+                      ${getRangeColor(teamScores.content.introduction, 10)} ${
+                      (teamScores.content.introduction / 10) * 100
+                    }%,
                       #E5E7EB ${(teamScores.content.introduction / 10) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -278,18 +321,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="10"
                   value={teamScores.content.theme}
-                  onChange={(e) => handleScoreChange('content', 'theme', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.content.theme, 10)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "content",
+                      "theme",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.content.theme,
+                    10
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.content.theme, 10)} 0%,
-                      ${getRangeColor(teamScores.content.theme, 10)} ${(teamScores.content.theme / 10) * 100}%,
+                      ${getRangeColor(teamScores.content.theme, 10)} ${
+                      (teamScores.content.theme / 10) * 100
+                    }%,
                       #E5E7EB ${(teamScores.content.theme / 10) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -304,18 +359,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="10"
                   value={teamScores.content.creativity}
-                  onChange={(e) => handleScoreChange('content', 'creativity', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.content.creativity, 10)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "content",
+                      "creativity",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.content.creativity,
+                    10
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.content.creativity, 10)} 0%,
-                      ${getRangeColor(teamScores.content.creativity, 10)} ${(teamScores.content.creativity / 10) * 100}%,
+                      ${getRangeColor(teamScores.content.creativity, 10)} ${
+                      (teamScores.content.creativity / 10) * 100
+                    }%,
                       #E5E7EB ${(teamScores.content.creativity / 10) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -338,18 +405,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.technical.videoEffect}
-                  onChange={(e) => handleScoreChange('technical', 'videoEffect', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.technical.videoEffect, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "technical",
+                      "videoEffect",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.technical.videoEffect,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.technical.videoEffect, 5)} 0%,
-                      ${getRangeColor(teamScores.technical.videoEffect, 5)} ${(teamScores.technical.videoEffect / 5) * 100}%,
+                      ${getRangeColor(teamScores.technical.videoEffect, 5)} ${
+                      (teamScores.technical.videoEffect / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.technical.videoEffect / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -363,18 +442,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.technical.videoQuality}
-                  onChange={(e) => handleScoreChange('technical', 'videoQuality', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.technical.videoQuality, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "technical",
+                      "videoQuality",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.technical.videoQuality,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.technical.videoQuality, 5)} 0%,
-                      ${getRangeColor(teamScores.technical.videoQuality, 5)} ${(teamScores.technical.videoQuality / 5) * 100}%,
+                      ${getRangeColor(teamScores.technical.videoQuality, 5)} ${
+                      (teamScores.technical.videoQuality / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.technical.videoQuality / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -388,18 +479,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.technical.audioQuality}
-                  onChange={(e) => handleScoreChange('technical', 'audioQuality', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.technical.audioQuality, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "technical",
+                      "audioQuality",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.technical.audioQuality,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.technical.audioQuality, 5)} 0%,
-                      ${getRangeColor(teamScores.technical.audioQuality, 5)} ${(teamScores.technical.audioQuality / 5) * 100}%,
+                      ${getRangeColor(teamScores.technical.audioQuality, 5)} ${
+                      (teamScores.technical.audioQuality / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.technical.audioQuality / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -423,18 +526,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.ai.imageQuality}
-                  onChange={(e) => handleScoreChange('ai', 'imageQuality', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.ai.imageQuality, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "ai",
+                      "imageQuality",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.ai.imageQuality,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.ai.imageQuality, 5)} 0%,
-                      ${getRangeColor(teamScores.ai.imageQuality, 5)} ${(teamScores.ai.imageQuality / 5) * 100}%,
+                      ${getRangeColor(teamScores.ai.imageQuality, 5)} ${
+                      (teamScores.ai.imageQuality / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.ai.imageQuality / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -448,18 +563,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.ai.audioQuality}
-                  onChange={(e) => handleScoreChange('ai', 'audioQuality', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.ai.audioQuality, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "ai",
+                      "audioQuality",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.ai.audioQuality,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.ai.audioQuality, 5)} 0%,
-                      ${getRangeColor(teamScores.ai.audioQuality, 5)} ${(teamScores.ai.audioQuality / 5) * 100}%,
+                      ${getRangeColor(teamScores.ai.audioQuality, 5)} ${
+                      (teamScores.ai.audioQuality / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.ai.audioQuality / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -473,18 +600,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.ai.scriptIdea}
-                  onChange={(e) => handleScoreChange('ai', 'scriptIdea', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.ai.scriptIdea, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "ai",
+                      "scriptIdea",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.ai.scriptIdea,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.ai.scriptIdea, 5)} 0%,
-                      ${getRangeColor(teamScores.ai.scriptIdea, 5)} ${(teamScores.ai.scriptIdea / 5) * 100}%,
+                      ${getRangeColor(teamScores.ai.scriptIdea, 5)} ${
+                      (teamScores.ai.scriptIdea / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.ai.scriptIdea / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -498,18 +637,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.ai.creativity}
-                  onChange={(e) => handleScoreChange('ai', 'creativity', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.ai.creativity, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "ai",
+                      "creativity",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.ai.creativity,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.ai.creativity, 5)} 0%,
-                      ${getRangeColor(teamScores.ai.creativity, 5)} ${(teamScores.ai.creativity / 5) * 100}%,
+                      ${getRangeColor(teamScores.ai.creativity, 5)} ${
+                      (teamScores.ai.creativity / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.ai.creativity / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -532,18 +683,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.presentation.speaking}
-                  onChange={(e) => handleScoreChange('presentation', 'speaking', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.presentation.speaking, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "presentation",
+                      "speaking",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.presentation.speaking,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.presentation.speaking, 5)} 0%,
-                      ${getRangeColor(teamScores.presentation.speaking, 5)} ${(teamScores.presentation.speaking / 5) * 100}%,
+                      ${getRangeColor(teamScores.presentation.speaking, 5)} ${
+                      (teamScores.presentation.speaking / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.presentation.speaking / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -557,18 +720,35 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.presentation.confidence}
-                  onChange={(e) => handleScoreChange('presentation', 'confidence', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.presentation.confidence, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "presentation",
+                      "confidence",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.presentation.confidence,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
-                      ${getRangeColor(teamScores.presentation.confidence, 5)} 0%,
-                      ${getRangeColor(teamScores.presentation.confidence, 5)} ${(teamScores.presentation.confidence / 5) * 100}%,
-                      #E5E7EB ${(teamScores.presentation.confidence / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      ${getRangeColor(
+                        teamScores.presentation.confidence,
+                        5
+                      )} 0%,
+                      ${getRangeColor(teamScores.presentation.confidence, 5)} ${
+                      (teamScores.presentation.confidence / 5) * 100
+                    }%,
+                      #E5E7EB ${
+                        (teamScores.presentation.confidence / 5) * 100
+                      }%,
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -582,18 +762,30 @@ const Dashboard = () => {
               </label>
               <div className="flex items-center space-x-2 md:w-1/3">
                 <input
+                  disabled={teamScores.submitted}
                   type="range"
                   min="1"
                   max="5"
                   value={teamScores.presentation.timing}
-                  onChange={(e) => handleScoreChange('presentation', 'timing', parseInt(e.target.value))}
-                  className={`w-full h-3  rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(teamScores.presentation.timing, 5)}`}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      "presentation",
+                      "timing",
+                      parseInt(e.target.value)
+                    )
+                  }
+                  className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg   ${getRangeColor(
+                    teamScores.presentation.timing,
+                    5
+                  )}`}
                   style={{
                     background: `linear-gradient(to right, 
                       ${getRangeColor(teamScores.presentation.timing, 5)} 0%,
-                      ${getRangeColor(teamScores.presentation.timing, 5)} ${(teamScores.presentation.timing / 5) * 100}%,
+                      ${getRangeColor(teamScores.presentation.timing, 5)} ${
+                      (teamScores.presentation.timing / 5) * 100
+                    }%,
                       #E5E7EB ${(teamScores.presentation.timing / 5) * 100}%,
-                      #E5E7EB 100%)`
+                      #E5E7EB 100%)`,
                   }}
                 />
                 <span className="w-8 text-center text-sm md:text-base font-black text-gray-900">
@@ -604,15 +796,14 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="text-center">
-        <button
-          onClick={handleSubmit}
-          className="w-1/3 h-55 text-white text-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          disabled={teamScores.submitted}
-        >
-          {teamScores.submitted ? 'Đã nộp' : 'Nộp điểm'}
-        </button>
+          <button
+            onClick={handleSubmit}
+            className="w-1/3 h-55 text-white text-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            disabled={teamScores.submitted}
+          >
+            {teamScores.submitted ? "Đã nộp" : "Nộp điểm"}
+          </button>
         </div>
-      
       </div>
     );
   };
@@ -620,29 +811,29 @@ const Dashboard = () => {
   return (
     <div className="p-4 max-w-full">
       <style>{rangeStyles}</style>
-      <h1 className="text-gray-900 text-6xl dark:text-white text-center my-10 font-black">CHẤM ĐIỂM</h1>
-      
+      <h1 className="text-gray-900 text-6xl dark:text-white text-center my-10 font-black">
+        CHẤM ĐIỂM
+      </h1>
+
       {/* Team buttons - Responsive grid */}
       <div className="container mx-auto">
-      <div className="grid grid-cols-3 md:flex md:space-x-4 gap-2 mb-4">
-        {Object.keys(scores).map((teamId) => (
-          <button
-            key={teamId}
-            onClick={() => setSelectedTeam(teamId)}
-            className={getTeamButtonStyle(teamId)}
-          >
-            {teamId}
-            {isTeamFullyScored(teamId) && (
-              <span className="ml-1 text-sm">✓</span>
-            )}
-          </button>
-        ))}
-      </div>
+        <div className="grid grid-cols-3 md:flex md:space-x-4 gap-2 mb-4">
+          {Object.keys(scores).map((teamId) => (
+            <button
+              key={teamId}
+              onClick={() => setSelectedTeam(teamId)}
+              className={getTeamButtonStyle(teamId)}
+            >
+              {teamId}
+              {isTeamFullyScored(teamId) && (
+                <span className="ml-1 text-sm">✓</span>
+              )}
+            </button>
+          ))}
+        </div>
 
-      {/* Scoring Form */}
-      <div className="space-y-4">
-        {renderScoreInputs()}
-      </div>
+        {/* Scoring Form */}
+        <div className="space-y-4">{renderScoreInputs()}</div>
       </div>
     </div>
   );

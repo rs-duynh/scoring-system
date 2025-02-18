@@ -138,18 +138,19 @@ const Dashboard = () => {
     }
 
     try {
-      const updatedScores = {
-        ...scores,
-        [selectedTeam as string]: {
+      // Cập nhật trạng thái submitted cho tất cả các team
+      const updatedScores = { ...scores };
+      Object.keys(scores).forEach((teamId) => {
+        updatedScores[teamId] = {
           scores: {
-            ...scores[selectedTeam as string].scores,
+            ...scores[teamId].scores,
             [user.email]: {
-              ...scores[selectedTeam as string].scores[user.email],
+              ...scores[teamId].scores[user.email],
               submitted: true,
             },
           },
-        },
-      };
+        };
+      });
 
       await api.post("/api/submit-scores", { scores: updatedScores });
       setScores(updatedScores);

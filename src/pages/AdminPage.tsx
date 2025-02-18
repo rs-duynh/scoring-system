@@ -67,7 +67,9 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const [scores, setScores] = useState<Scores>({});
   const [loading, setLoading] = useState(true);
-  const [selectedTeamDetail, setSelectedTeamDetail] = useState<string | null>(null);
+  const [selectedTeamDetail, setSelectedTeamDetail] = useState<string | null>(
+    null
+  );
   const [accounts, setAccounts] = useState<Account[]>([]);
 
   useEffect(() => {
@@ -100,7 +102,8 @@ const AdminPage = () => {
   };
 
   const handleResetScores = async () => {
-    if (!window.confirm("Bạn có chắc chắn muốn reset tất cả điểm về 0?")) return;
+    if (!window.confirm("Bạn có chắc chắn muốn reset tất cả điểm về 0?"))
+      return;
     try {
       await api.post("/api/reset-scores");
       await fetchData();
@@ -112,54 +115,107 @@ const AdminPage = () => {
   };
 
   const calculateCategoryScore = (scores: Score, category: keyof Score) => {
-    if (category === 'submitted') return 0;
+    if (category === "submitted") return 0;
     const values = Object.values(scores[category] as Record<string, number>);
     return values.reduce((sum, score) => sum + score, 0);
   };
 
   const calculateTeamResults = (): TeamResult[] => {
     const results = Object.entries(scores).map(([teamId, teamData]) => {
-      const judgeScores = Object.values(teamData.scores);
-      const totalJudges = judgeScores.length;
-      const submittedCount = judgeScores.filter(score => score.submitted).length;
+      const judgeScores = Object.entries(teamData.scores);
 
-      const totalScores = {
-        branding: 0,
-        content: 0,
-        technical: 0,
-        ai: 0,
-        presentation: 0,
+      // Phân loại điểm theo vai trò
+      const roleScores = {
+        admin: [] as number[],
+        bgk: [] as number[],
+        member: [] as number[],
       };
 
-      judgeScores.forEach(score => {
-        if (score.submitted) {
-          totalScores.branding += calculateCategoryScore(score, 'branding');
-          totalScores.content += calculateCategoryScore(score, 'content');
-          totalScores.technical += calculateCategoryScore(score, 'technical');
-          totalScores.ai += calculateCategoryScore(score, 'ai');
-          totalScores.presentation += calculateCategoryScore(score, 'presentation');
+      judgeScores.forEach(([email, score]) => {
+        if (!score.submitted) return;
+
+        const account = accounts.find((acc) => acc.email === email);
+        if (!account) return;
+
+        const totalScore =
+          calculateCategoryScore(score, "branding") +
+          calculateCategoryScore(score, "content") +
+          calculateCategoryScore(score, "technical") +
+          calculateCategoryScore(score, "ai") +
+          calculateCategoryScore(score, "presentation");
+
+        switch (account.role) {
+          case "admin":
+            roleScores.admin.push(totalScore);
+            break;
+          case "bgk":
+            roleScores.bgk.push(totalScore);
+            break;
+          case "member":
+            roleScores.member.push(totalScore);
+            break;
         }
       });
 
-      const submittedJudges = Math.max(submittedCount, 1);
-      const averageScore = (
-        totalScores.branding +
-        totalScores.content +
-        totalScores.technical +
-        totalScores.ai +
-        totalScores.presentation
-      ) / submittedJudges;
+      // Tính điểm trung bình cho từng vai trò
+      const getAverageScore = (scores: number[]) =>
+        scores.length > 0
+          ? scores.reduce((a, b) => a + b, 0) / scores.length
+          : 0;
+
+      const adminAvg = getAverageScore(roleScores.admin);
+      const bgkAvg = getAverageScore(roleScores.bgk);
+      const memberAvg = getAverageScore(roleScores.member);
+
+      // Tính điểm tổng theo công thức: 50% Admin + 50% BGK + 50% Member
+      const averageScore = adminAvg * 0.5 + bgkAvg * 0.5 + memberAvg * 0.5;
+
+      // Tính điểm cho từng hạng mục tương tự
+      const calculateCategoryByRole = (category: keyof Score) => {
+        const adminCatAvg = getAverageScore(
+          judgeScores
+            .filter(
+              ([email]) =>
+                accounts.find((acc) => acc.email === email)?.role === "admin" &&
+                teamData.scores[email].submitted
+            )
+            .map(([_, score]) => calculateCategoryScore(score, category))
+        );
+
+        const bgkCatAvg = getAverageScore(
+          judgeScores
+            .filter(
+              ([email]) =>
+                accounts.find((acc) => acc.email === email)?.role === "bgk" &&
+                teamData.scores[email].submitted
+            )
+            .map(([_, score]) => calculateCategoryScore(score, category))
+        );
+
+        const memberCatAvg = getAverageScore(
+          judgeScores
+            .filter(
+              ([email]) =>
+                accounts.find((acc) => acc.email === email)?.role ===
+                  "member" && teamData.scores[email].submitted
+            )
+            .map(([_, score]) => calculateCategoryScore(score, category))
+        );
+
+        return adminCatAvg * 0.5 + bgkCatAvg * 0.5 + memberCatAvg * 0.5;
+      };
 
       return {
         teamId,
         averageScore,
-        brandingScore: totalScores.branding / submittedJudges,
-        contentScore: totalScores.content / submittedJudges,
-        technicalScore: totalScores.technical / submittedJudges,
-        aiScore: totalScores.ai / submittedJudges,
-        presentationScore: totalScores.presentation / submittedJudges,
-        submittedCount,
-        totalJudges
+        brandingScore: calculateCategoryByRole("branding"),
+        contentScore: calculateCategoryByRole("content"),
+        technicalScore: calculateCategoryByRole("technical"),
+        aiScore: calculateCategoryByRole("ai"),
+        presentationScore: calculateCategoryByRole("presentation"),
+        submittedCount: judgeScores.filter(([_, score]) => score.submitted)
+          .length,
+        totalJudges: judgeScores.length,
       };
     });
 
@@ -217,54 +273,60 @@ const AdminPage = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {Object.entries(teamData.scores).map(([email, score]) => {
-                const account = accounts.find(acc => acc.email === email);
+                const account = accounts.find((acc) => acc.email === email);
                 return (
                   <tr key={email} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {account?.name || 'N/A'}
+                      {account?.name || "N/A"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        account?.role === 'admin' ? 'bg-red-100 text-red-800' :
-                        account?.role === 'bgk' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {account?.role || 'N/A'}
+                      <span
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          account?.role === "admin"
+                            ? "bg-red-100 text-red-800"
+                            : account?.role === "bgk"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {account?.role || "N/A"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {calculateCategoryScore(score, 'branding')}
+                      {calculateCategoryScore(score, "branding")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {calculateCategoryScore(score, 'content')}
+                      {calculateCategoryScore(score, "content")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {calculateCategoryScore(score, 'technical')}
+                      {calculateCategoryScore(score, "technical")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {calculateCategoryScore(score, 'ai')}
+                      {calculateCategoryScore(score, "ai")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {calculateCategoryScore(score, 'presentation')}
+                      {calculateCategoryScore(score, "presentation")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       {(
-                        calculateCategoryScore(score, 'branding') +
-                        calculateCategoryScore(score, 'content') +
-                        calculateCategoryScore(score, 'technical') +
-                        calculateCategoryScore(score, 'ai') +
-                        calculateCategoryScore(score, 'presentation')
+                        calculateCategoryScore(score, "branding") +
+                        calculateCategoryScore(score, "content") +
+                        calculateCategoryScore(score, "technical") +
+                        calculateCategoryScore(score, "ai") +
+                        calculateCategoryScore(score, "presentation")
                       ).toFixed(1)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        score.submitted
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}>
+                      <span
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          score.submitted
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
                         {score.submitted ? "Đã chấm" : "Chưa chấm"}
                       </span>
                     </td>
@@ -327,17 +389,29 @@ const AdminPage = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {teamResults.map((result, index) => (
-              <tr 
-                key={result.teamId} 
-                className={`${index < 3 ? 'bg-yellow-50' : ''} cursor-pointer hover:bg-gray-50`}
-                onClick={() => setSelectedTeamDetail(selectedTeamDetail === result.teamId ? null : result.teamId)}
+              <tr
+                key={result.teamId}
+                className={`${
+                  index < 3 ? "bg-yellow-50" : ""
+                } cursor-pointer hover:bg-gray-50`}
+                onClick={() =>
+                  setSelectedTeamDetail(
+                    selectedTeamDetail === result.teamId ? null : result.teamId
+                  )
+                }
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
-                    index === 0 ? 'bg-yellow-400' :
-                    index === 1 ? 'bg-gray-300' :
-                    index === 2 ? 'bg-yellow-600' : 'bg-gray-100'
-                  } font-bold`}>
+                  <span
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                      index === 0
+                        ? "bg-yellow-400"
+                        : index === 1
+                        ? "bg-gray-300"
+                        : index === 2
+                        ? "bg-yellow-600"
+                        : "bg-gray-100"
+                    } font-bold`}
+                  >
                     {index + 1}
                   </span>
                 </td>
@@ -363,11 +437,13 @@ const AdminPage = () => {
                   {result.averageScore.toFixed(1)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    result.submittedCount === result.totalJudges
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      result.submittedCount === result.totalJudges
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
                     {result.submittedCount}/{result.totalJudges}
                   </span>
                 </td>

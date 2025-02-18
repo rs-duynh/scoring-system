@@ -56,12 +56,19 @@ interface TeamResult {
   totalJudges: number;
 }
 
+interface Account {
+  email: string;
+  name: string;
+  role: string;
+}
+
 const AdminPage = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
   const [scores, setScores] = useState<Scores>({});
   const [loading, setLoading] = useState(true);
   const [selectedTeamDetail, setSelectedTeamDetail] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
 
   useEffect(() => {
     if (!user || (user.role !== "admin" && user.role !== "bgk")) {
@@ -69,6 +76,7 @@ const AdminPage = () => {
       return;
     }
     fetchData();
+    fetchAccounts();
   }, [user, navigate]);
 
   const fetchData = async () => {
@@ -79,6 +87,15 @@ const AdminPage = () => {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAccounts = async () => {
+    try {
+      const response = await api.get("/api/get-accounts");
+      setAccounts(response.data);
+    } catch (error) {
+      console.error("Error fetching accounts:", error);
     }
   };
 
@@ -154,9 +171,7 @@ const AdminPage = () => {
   const teamResults = calculateTeamResults();
 
   const renderTeamDetail = (teamId: string) => {
-    console.log("🚀 ~ renderTeamDetail ~ teamId:", teamId)
     const teamData = scores[teamId];
-    console.log("🚀 ~ renderTeamDetail ~ teamData:", teamData)
     if (!teamData) return null;
 
     return (
@@ -169,7 +184,13 @@ const AdminPage = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Giám khảo
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tên giám khảo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Vai trò
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nhận diện
@@ -195,46 +216,61 @@ const AdminPage = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {Object.entries(teamData.scores).map(([email, score]) => (
-                <tr key={email} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {calculateCategoryScore(score, 'branding')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {calculateCategoryScore(score, 'content')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {calculateCategoryScore(score, 'technical')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {calculateCategoryScore(score, 'ai')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {calculateCategoryScore(score, 'presentation')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {(
-                      calculateCategoryScore(score, 'branding') +
-                      calculateCategoryScore(score, 'content') +
-                      calculateCategoryScore(score, 'technical') +
-                      calculateCategoryScore(score, 'ai') +
-                      calculateCategoryScore(score, 'presentation')
-                    ).toFixed(1)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      score.submitted
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}>
-                      {score.submitted ? "Đã chấm" : "Chưa chấm"}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {Object.entries(teamData.scores).map(([email, score]) => {
+                const account = accounts.find(acc => acc.email === email);
+                return (
+                  <tr key={email} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      {account?.name || 'N/A'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        account?.role === 'admin' ? 'bg-red-100 text-red-800' :
+                        account?.role === 'bgk' ? 'bg-blue-100 text-blue-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {account?.role || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {calculateCategoryScore(score, 'branding')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {calculateCategoryScore(score, 'content')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {calculateCategoryScore(score, 'technical')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {calculateCategoryScore(score, 'ai')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {calculateCategoryScore(score, 'presentation')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      {(
+                        calculateCategoryScore(score, 'branding') +
+                        calculateCategoryScore(score, 'content') +
+                        calculateCategoryScore(score, 'technical') +
+                        calculateCategoryScore(score, 'ai') +
+                        calculateCategoryScore(score, 'presentation')
+                      ).toFixed(1)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        score.submitted
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}>
+                        {score.submitted ? "Đã chấm" : "Chưa chấm"}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -73,22 +73,32 @@ const AdminPage = () => {
       .filter((score) => score.judge !== undefined && score.submitted)
       .map((score) => score.judge as number)
       .reduce((a, b) => a + b, 0);
-
-    // Tính tổng điểm Member (25%)
+  
+    // Tính tổng điểm Member (50%)
     const memberScores = Object.values(examData.scores)
       .filter((score) => score.member !== undefined && score.submitted)
       .map((score) => score.member as number)
       .reduce((a, b) => a + b, 0);
+  
+    return judgeScores * 0.5 + memberScores * 0.5;
+  };
 
-    // Lấy điểm tương tác (25%)
-    const interactionScore = examData.interactionScore || 0;
-
-    return judgeScores * 0.5 + memberScores * 0.25 + interactionScore * 0.25;
+  const handleResetScores = async () => {
+    try {
+      const response = await api.post('/api/reset-scores');
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error resetting scores:', error);
+      alert('Failed to reset scores');
+    }
   };
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      <button onClick={handleResetScores} className="bg-red-500 text-white p-2 mt-4 rounded">
+        Reset Scores (warning: this action will reset all scores to 0)
+      </button>
       <div className="overflow-x-auto">
         {Object.entries(scores).map(([examId, examData]) => (
           <div key={examId} className="mb-8">
@@ -117,7 +127,7 @@ const AdminPage = () => {
                     </td>
                   </tr>
                 ))}
-                <tr className="bg-gray-50">
+                {/* <tr className="bg-gray-50">
                   <td colSpan={2} className="border p-2 font-bold">
                     Interaction Score (25%):
                   </td>
@@ -137,10 +147,10 @@ const AdminPage = () => {
                     />
                   </td>
                   <td className="border p-2"></td>
-                </tr>
+                </tr> */}
                 <tr className="bg-gray-50">
                   <td colSpan={3} className="border p-2 font-bold text-right">
-                    Final Score (50% BGK + 25% Member + 25% Interaction):
+                    Final Score (50% BGK + 50% Member):
                   </td>
                   <td className="border p-2 text-center font-bold">
                     {calculateFinalScore(examData).toFixed(2)}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api from "../utils/axios";
 
-// Thêm style vào phần head của component
+// Add style to the component's head
 const getRangeColor = (value: number, max: number) => {
   const percentage = (value / max) * 100;
   if (percentage >= 100) return "bg-green-900";
@@ -18,7 +18,7 @@ const getRangeColor = (value: number, max: number) => {
   return "bg-green-0";
 };
 
-// CSS cho range input
+// CSS for range input
 const rangeStyles = `
   .range-input {
     -webkit-appearance: none;
@@ -115,7 +115,7 @@ const Dashboard = () => {
     const teamScores = scores[teamId]?.scores[user.email];
     if (!teamScores) return false;
 
-    // Kiểm tra tất cả các mục đã được chấm điểm
+    // Check if all items have been scored
     return Object.entries(teamScores).every(([category, values]: any) => {
       if (category === "submitted") return true;
       return Object.values(values).every((score: any) => score > 0);
@@ -124,7 +124,13 @@ const Dashboard = () => {
 
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  const handleSubmit = async () => {
+  // Add states for notification modals
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  // Fix handleSubmit function
+  const handleSubmitClick = () => {
     const unScoredTeams = Object.keys(scores).filter(
       (teamId) => !isTeamFullyScored(teamId)
     );
@@ -137,8 +143,45 @@ const Dashboard = () => {
       return;
     }
 
+    setShowConfirmModal(true);
+  };
+
+  // Add modal component
+  const ConfirmModal = () => {
+    if (!showConfirmModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <h3 className="text-xl font-bold mb-4">Xác nhận nộp điểm</h3>
+          <p className="text-gray-600 mb-6">
+            Bạn đã xác nhận sẽ nộp chứ? Sẽ không thể chỉnh sửa sau khi đánh giá.
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setShowConfirmModal(false)}
+              className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+            >
+              Hủy
+            </button>
+            <button
+              onClick={() => {
+                setShowConfirmModal(false);
+                handleSubmit();
+              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleSubmit = async () => {
     try {
-      // Cập nhật trạng thái submitted cho tất cả các team
+      // Update the submitted status for all teams
       const updatedScores = { ...scores };
       Object.keys(scores).forEach((teamId) => {
         updatedScores[teamId] = {
@@ -155,10 +198,10 @@ const Dashboard = () => {
       await api.post("/api/submit-scores", { scores: updatedScores });
       setScores(updatedScores);
       setValidationErrors([]);
-      alert("Scores submitted successfully!");
+      setShowSuccessModal(true);
     } catch (error) {
       console.error("Error submitting scores:", error);
-      alert("Failed to submit scores");
+      setShowErrorModal(true);
     }
   };
 
@@ -798,12 +841,91 @@ const Dashboard = () => {
         </div>
         <div className="text-center">
           <button
-            onClick={handleSubmit}
+            onClick={handleSubmitClick}
             className="w-1/3 h-55 text-white text-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             disabled={teamScores.submitted}
           >
             {teamScores.submitted ? "Đã nộp" : "Nộp điểm"}
           </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Add components for success and failure modals
+  const SuccessModal = () => {
+    if (!showSuccessModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+              <svg
+                className="h-6 w-6 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">
+              Nộp điểm thành công!
+            </h3>
+            <p className="text-gray-600">Cảm ơn bạn đã hoàn thành đánh giá.</p>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ErrorModal = () => {
+    if (!showErrorModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <svg
+                className="h-6 w-6 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">Nộp điểm thất bại!</h3>
+            <p className="text-gray-600">Đã có lỗi xảy ra. Vui lòng thử lại.</p>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => setShowErrorModal(false)}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Đóng
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -836,6 +958,9 @@ const Dashboard = () => {
         {/* Scoring Form */}
         <div className="space-y-4">{renderScoreInputs()}</div>
       </div>
+      <ConfirmModal />
+      <SuccessModal />
+      <ErrorModal />
     </div>
   );
 };

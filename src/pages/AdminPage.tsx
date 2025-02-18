@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/axios";
-
+import styled from "styled-components";
+//css icon-rank thêm box-shadow
+const IconRank = styled.span`
+  box-shadow: 5px 5px 8px 1px rgba(0, 0, 0, 0.2);
+`;
 interface Score {
   branding: {
     uniformity: number;
@@ -124,7 +128,7 @@ const AdminPage = () => {
     const results = Object.entries(scores).map(([teamId, teamData]) => {
       const judgeScores = Object.entries(teamData.scores);
 
-      // Phân loại điểm theo vai trò
+      // Categorize scores by role
       const roleScores = {
         admin: [] as number[],
         bgk: [] as number[],
@@ -157,7 +161,7 @@ const AdminPage = () => {
         }
       });
 
-      // Tính điểm trung bình cho từng vai trò
+      // Calculate average score for each role
       const getAverageScore = (scores: number[]) =>
         scores.length > 0
           ? scores.reduce((a, b) => a + b, 0) / scores.length
@@ -167,10 +171,10 @@ const AdminPage = () => {
       const bgkAvg = getAverageScore(roleScores.bgk);
       const memberAvg = getAverageScore(roleScores.member);
 
-      // Tính điểm tổng theo công thức: 50% Admin + 50% BGK + 50% Member
+      // Calculate total score according to the formula: 50% Admin + 50% BGK + 50% Member
       const averageScore = adminAvg * 0.5 + bgkAvg * 0.5 + memberAvg * 0.5;
 
-      // Tính điểm cho từng hạng mục tương tự
+      // Calculate score for each category similarly
       const calculateCategoryByRole = (category: keyof Score) => {
         const adminCatAvg = getAverageScore(
           judgeScores
@@ -222,7 +226,7 @@ const AdminPage = () => {
     return results.sort((a, b) => b.averageScore - a.averageScore);
   };
 
-  if (loading) return <div className="p-4">Đang tải...</div>;
+  if (loading) return <div className="p-4">Loading...</div>;
 
   const teamResults = calculateTeamResults();
 
@@ -236,37 +240,37 @@ const AdminPage = () => {
           <h3 className="text-lg font-semibold">Chi tiết điểm {teamId}</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 border-2 border-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tên giám khảo
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Vai trò
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nhận diện
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nội dung
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Kỹ thuật
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   AI
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Thuyết trình
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tổng điểm
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Trạng thái
                 </th>
               </tr>
@@ -276,13 +280,13 @@ const AdminPage = () => {
                 const account = accounts.find((acc) => acc.email === email);
                 return (
                   <tr key={email} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {email}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       {account?.name || "N/A"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       <span
                         className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           account?.role === "admin"
@@ -295,22 +299,22 @@ const AdminPage = () => {
                         {account?.role || "N/A"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {calculateCategoryScore(score, "branding")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {calculateCategoryScore(score, "content")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {calculateCategoryScore(score, "technical")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {calculateCategoryScore(score, "ai")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                       {calculateCategoryScore(score, "presentation")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       {(
                         calculateCategoryScore(score, "branding") +
                         calculateCategoryScore(score, "content") +
@@ -319,7 +323,7 @@ const AdminPage = () => {
                         calculateCategoryScore(score, "presentation")
                       ).toFixed(1)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
                       <span
                         className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           score.submitted
@@ -355,34 +359,34 @@ const AdminPage = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200 border-2 border-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Xếp hạng
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Team
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Nhận diện (20đ)
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Nội dung (30đ)
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Kỹ thuật (15đ)
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 AI (20đ)
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Thuyết trình (15đ)
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Tổng điểm
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Đã chấm
               </th>
             </tr>
@@ -392,17 +396,21 @@ const AdminPage = () => {
               <tr
                 key={result.teamId}
                 className={`${
-                  index < 3 ? "bg-yellow-50" : ""
-                } cursor-pointer hover:bg-gray-50`}
+                  index < 3 && selectedTeamDetail !== result.teamId
+                    ? "bg-yellow-50"
+                    : ""
+                } ${
+                  selectedTeamDetail === result.teamId ? "bg-blue-100" : ""
+                } cursor-pointer hover:bg-blue-50`}
                 onClick={() =>
                   setSelectedTeamDetail(
                     selectedTeamDetail === result.teamId ? null : result.teamId
                   )
                 }
               >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <IconRank
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full icon-rank ${
                       index === 0
                         ? "bg-yellow-400"
                         : index === 1
@@ -413,30 +421,30 @@ const AdminPage = () => {
                     } font-bold`}
                   >
                     {index + 1}
-                  </span>
+                  </IconRank>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap font-medium">
+                <td className="px-6 py-4 whitespace-nowrap text-center font-medium">
                   {result.teamId}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {result.brandingScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {result.contentScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {result.technicalScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {result.aiScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {result.presentationScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap font-bold">
+                <td className="px-6 py-4 whitespace-nowrap text-center font-bold">
                   {result.averageScore.toFixed(1)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   <span
                     className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       result.submittedCount === result.totalJudges

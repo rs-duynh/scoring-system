@@ -38,30 +38,43 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 w-96 border rounded-md shadow-md">
-      <h2 className="text-xl font-bold">Login</h2>
-      {error && <div className="text-red-500 mb-2">{error}</div>}
-      <input
-        className="border p-2 mt-2"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className="border p-2 mt-2"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        className="bg-blue-500 text-white p-2 mt-4 rounded disabled:bg-blue-300"
-        onClick={handleLogin}
-        disabled={loading}
-      >
-        {loading ? 'Logging in...' : 'Login'}
-      </button>
+    <div className="min-h-screen flex bg-gray-100 items-center justify-center p-4 ">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+        <h2 className="text-xl font-bold text-center">Login</h2>
+        {error && <div className="text-red-500 my-3 text-center">{error}</div>}
+        <div className='mt-5'>
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">Email</label>
+          <input
+            id="email"
+            className="border p-2 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all rounded-lg"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className='mt-5'>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">Password</label>
+          <input
+            id="password"
+            className="border p-2 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all rounded-lg"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className='mt-5'>
+          <button
+            className="bg-blue-500 text-white p-2 rounded disabled:bg-blue-300 w-full bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </div>
+
+      </div>
     </div>
   );
 };

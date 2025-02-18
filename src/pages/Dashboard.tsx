@@ -129,7 +129,10 @@ const Dashboard = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
-  // Fix handleSubmit function
+  // Add state for validation modal
+  const [showValidationModal, setShowValidationModal] = useState(false);
+
+  // Fix handleSubmitClick function
   const handleSubmitClick = () => {
     const unScoredTeams = Object.keys(scores).filter(
       (teamId) => !isTeamFullyScored(teamId)
@@ -137,9 +140,7 @@ const Dashboard = () => {
 
     if (unScoredTeams.length > 0) {
       setValidationErrors(unScoredTeams);
-      alert(
-        `Vui lòng chấm điểm đầy đủ cho các team: ${unScoredTeams.join(", ")}`
-      );
+      setShowValidationModal(true);
       return;
     }
 
@@ -153,9 +154,10 @@ const Dashboard = () => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-          <h3 className="text-xl font-bold mb-4">Xác nhận nộp điểm</h3>
+          <h3 className="text-xl font-bold mb-4">Xác nhận chấm điểm</h3>
           <p className="text-gray-600 mb-6">
-            Bạn đã xác nhận sẽ nộp chứ? Sẽ không thể chỉnh sửa sau khi đánh giá.
+            Bạn đã xác nhận sẽ chấm chứ? Sẽ không thể chỉnh sửa sau khi đánh
+            giá.
           </p>
           <div className="flex justify-end space-x-4">
             <button
@@ -845,7 +847,7 @@ const Dashboard = () => {
             className="w-1/3 h-55 text-white text-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             disabled={teamScores.submitted}
           >
-            {teamScores.submitted ? "Đã nộp" : "Nộp điểm"}
+            {teamScores.submitted ? "Đã chấm" : "chấm điểm"}
           </button>
         </div>
       </div>
@@ -876,7 +878,7 @@ const Dashboard = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mt-4 mb-2">
-              Nộp điểm thành công!
+              chấm điểm thành công!
             </h3>
             <p className="text-gray-600">Cảm ơn bạn đã hoàn thành đánh giá.</p>
           </div>
@@ -915,13 +917,63 @@ const Dashboard = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-bold mt-4 mb-2">Nộp điểm thất bại!</h3>
+            <h3 className="text-xl font-bold mt-4 mb-2">chấm điểm thất bại!</h3>
             <p className="text-gray-600">Đã có lỗi xảy ra. Vui lòng thử lại.</p>
           </div>
           <div className="text-center">
             <button
               onClick={() => setShowErrorModal(false)}
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Thêm component ValidationModal
+  const ValidationModal = () => {
+    if (!showValidationModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100">
+              <svg
+                className="h-6 w-6 text-yellow-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">
+              Chưa chấm điểm đầy đủ!
+            </h3>
+            <p className="text-gray-600">
+              Vui lòng chấm điểm đầy đủ cho các team:
+            </p>
+            <div className="mt-2 space-y-1">
+              {validationErrors.map((teamId) => (
+                <div key={teamId} className="font-medium text-yellow-600">
+                  {teamId}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => setShowValidationModal(false)}
+              className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
             >
               Đóng
             </button>
@@ -961,6 +1013,7 @@ const Dashboard = () => {
       <ConfirmModal />
       <SuccessModal />
       <ErrorModal />
+      <ValidationModal />
     </div>
   );
 };

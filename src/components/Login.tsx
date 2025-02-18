@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ const Login = () => {
       setLoading(true);
       setError('');
       
-      const response = await axios.post('/api/login', {
+      const response = await api.post('/api/login', {
         email,
         password
       });

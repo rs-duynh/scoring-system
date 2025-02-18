@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true
 });
 
-// Thêm interceptor để tự động thêm token vào header
+// Add interceptor to automatically add token to header
 api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token'); // Hoặc lấy token từ Redux
+  const token = localStorage.getItem('token'); // Or get token from Redux
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

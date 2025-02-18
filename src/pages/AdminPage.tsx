@@ -75,6 +75,9 @@ const AdminPage = () => {
     null
   );
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
     if (!user || (user.role !== "admin" && user.role !== "bgk")) {
@@ -106,15 +109,13 @@ const AdminPage = () => {
   };
 
   const handleResetScores = async () => {
-    if (!window.confirm("Bạn có chắc chắn muốn reset tất cả điểm về 0?"))
-      return;
     try {
       await api.post("/api/reset-scores");
       await fetchData();
-      alert("Đã reset thành công!");
+      setShowSuccessModal(true);
     } catch (error) {
       console.error("Error resetting scores:", error);
-      alert("Không thể reset điểm!");
+      setShowErrorModal(true);
     }
   };
 
@@ -344,13 +345,143 @@ const AdminPage = () => {
     );
   };
 
+  const ResetModal = () => {
+    if (!showResetModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <svg
+                className="h-6 w-6 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">Xác nhận reset điểm</h3>
+            <p className="text-gray-600">
+              Bạn có chắc chắn muốn reset tất cả điểm về 0? Hành động này không
+              thể hoàn tác.
+            </p>
+          </div>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setShowResetModal(false)}
+              className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+            >
+              Hủy
+            </button>
+            <button
+              onClick={() => {
+                setShowResetModal(false);
+                handleResetScores();
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Xác nhận Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const SuccessModal = () => {
+    if (!showSuccessModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+              <svg
+                className="h-6 w-6 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">
+              Reset điểm thành công!
+            </h3>
+            <p className="text-gray-600">Tất cả điểm đã được reset về 0.</p>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ErrorModal = () => {
+    if (!showErrorModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <svg
+                className="h-6 w-6 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mt-4 mb-2">
+              Reset điểm thất bại!
+            </h3>
+            <p className="text-gray-600">Đã có lỗi xảy ra. Vui lòng thử lại.</p>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => setShowErrorModal(false)}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="p-4 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Bảng Xếp Hạng</h1>
         {user?.role === "admin" && (
           <button
-            onClick={handleResetScores}
+            onClick={() => setShowResetModal(true)}
             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
           >
             Reset điểm
@@ -462,6 +593,9 @@ const AdminPage = () => {
       </div>
 
       {selectedTeamDetail && renderTeamDetail(selectedTeamDetail)}
+      <ResetModal />
+      <SuccessModal />
+      <ErrorModal />
     </div>
   );
 };

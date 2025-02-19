@@ -63,7 +63,7 @@ const rangeStyles = `
   }
 
   .card.active .card_header {
-    color: #DB8027;
+    color: #155DFC;
   }
 `;
 
@@ -336,7 +336,7 @@ const Dashboard = () => {
 
         {/* Nội dung video */}
         <div className={`card border rounded bg-white ${openIndex === 2 ? 'active' : ''}`}>
-          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => setOpenIndex(2)}>
+          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => toggleOpenIndex(2)}>
             30 điểm - Nội dung video (Thang điểm 10 mỗi mục)
           </h3>
           <div className={`card_content overflow-hidden transition-all duration-300 ${openIndex !== 2 ? 'max-h-0' : 'max-h-screen'}`}>
@@ -460,7 +460,7 @@ const Dashboard = () => {
 
         {/* Kỹ thuật */}
         <div className={`card border rounded bg-white ${openIndex === 3 ? 'active' : ''}`}>
-          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => setOpenIndex(3)}>
+          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => toggleOpenIndex(3)}>
             15 điểm - Kỹ thuật (Thang điểm 5 mỗi mục)
           </h3>
           <div className={`card_content overflow-hidden transition-all duration-300 ${openIndex !== 3 ? 'max-h-0' : 'max-h-screen'}`}>
@@ -582,7 +582,7 @@ const Dashboard = () => {
 
         {/* Ứng dụng AI */}
         <div className={`card border rounded bg-white ${openIndex === 4 ? 'active' : ''}`}>
-          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => setOpenIndex(4)}>
+          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => toggleOpenIndex(4)}>
             20 điểm - Ứng dụng AI (Thang điểm 5 mỗi mục)
           </h3>
           <div className={`card_content overflow-hidden transition-all duration-300 ${openIndex !== 4 ? 'max-h-0' : 'max-h-screen'}`}>
@@ -742,7 +742,7 @@ const Dashboard = () => {
 
         {/* Thuyết trình */}
         <div className={`card border rounded bg-white ${openIndex === 5 ? 'active' : ''}`}>
-          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => setOpenIndex(5)}>
+          <h3 className="card_header p-4 font-bold text-sm md:text-base cursor-pointer" onClick={() => toggleOpenIndex(5)}>
             15 điểm - Thuyết trình (Thang điểm 5 mỗi mục)
           </h3>
           <div className={`card_content overflow-hidden transition-all duration-300 ${openIndex !== 5 ? 'max-h-0' : 'max-h-screen'}`}>

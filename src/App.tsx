@@ -6,8 +6,13 @@ import { store } from "./redux/store";
 import AdminPage from "./pages/AdminPage";
 import Home from "./pages/Home";
 import AuthMiddleware from "./middleware/AuthMiddleware";
+import React from "react";
 
 const App = () => {
+  React.useEffect(() => {
+    document.title = "[HCM] SCORING system 2025";
+  }, []);
+
   return (
     <Provider store={store}>
       <Router>

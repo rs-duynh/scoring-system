@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api from "../utils/axios";
+import Slider from '../components/Slider';
+import '../assets/css/styles.css';
 
 // Add style to the component's head
 const getRangeColor = (value: number, max: number) => {
@@ -62,6 +64,7 @@ const rangeStyles = `
     transform: scale(1.2);
   }
 `;
+
 
 const SCORING_CRITERIA = {
   branding: {
@@ -328,48 +331,29 @@ const Dashboard = () => {
     return (
       <div className="space-y-6">
         {Object.entries(SCORING_CRITERIA).map(([category, criteria]) => (
-          <div key={category} className="border border-gray-400 p-3 md:p-4 rounded">
+          <div key={category} className="border border-gray-400 px-3 py-8 rounded">
             <h3 className="font-bold mb-4 text-lg md:text-2xl">
               {criteria.title} ({criteria.maxPoints} điểm)
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-10">
               {Object.entries(criteria.items).map(([key, item]) => (
-                <div key={key} className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div key={key} className="flex flex-col md:flex-row md:items-end space-y-2 md:space-y-0 md:space-x-4">
                   <label className="md:w-2/3 text-sm md:text-base">
                     - {item.label}
                   </label>
-                  <div className="flex items-center space-x-2 md:w-1/3">
-                    <input
-                      disabled={teamScores.submitted}
-                      type="range"
-                      min="1"
-                      max={item.maxScore}
-                      value={teamScores[category][key]}
-                      onChange={(e) =>
-                        handleScoreChange(
-                          category,
-                          key,
-                          parseInt(e.target.value)
-                        )
-                      }
-                      className={`w-full h-7 border-2 border-gray-300 rounded-lg appearance-none cursor-pointer range-lg ${getRangeColor(
-                        teamScores[category][key],
-                        item.maxScore
-                      )}`}
-                      style={{
-                        background: `linear-gradient(to right, 
-                          ${getRangeColor(teamScores[category][key], item.maxScore)} 0%,
-                          ${getRangeColor(teamScores[category][key], item.maxScore)} ${
-                          (teamScores[category][key] / item.maxScore) * 100
-                        }%,
-                          #E5E7EB ${(teamScores[category][key] / item.maxScore) * 100}%,
-                          #E5E7EB 100%)`
-                      }}
-                    />
-                    <span className="w-8 text-center text-md md:text-2xl font-black text-gray-900">
-                      {teamScores[category][key]}
-                    </span>
-                  </div>
+                  <Slider
+                    min={0}
+                    max={item.maxScore}
+                    value={teamScores[category][key]}
+                    onChange={(e: any) =>
+                      handleScoreChange(
+                        category,
+                        key,
+                        parseInt(e.target.value)
+                      )
+                    }
+                    disabled={teamScores.submitted}
+                  />
                 </div>
               ))}
             </div>
@@ -519,7 +503,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 max-w-full">
-      <style>{rangeStyles}</style>
+       <style>{rangeStyles}</style>
       <h1 className="text-gray-900 text-6xl dark:text-white text-center my-10 font-black">
         CHẤM ĐIỂM
       </h1>

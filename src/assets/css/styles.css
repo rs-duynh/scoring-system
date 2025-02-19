@@ -1,0 +1,150 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font: 1em/1.5 Verdana,sans-serif;
+  }
+  .slider {
+    --thumb-diameter: 2em;
+    --thumb-radius: calc(var(--thumb-diameter) / 2);
+    --thumb-background: #C3C3C3;
+    --thumb-border: 2px solid #FFF;
+  
+    --track-height: .7em;
+    --track-background: linear-gradient(#9D9D9D, #F0F0F0);
+    --track-border-color: #CFCFCF;
+    --track-border-width: 1px;
+  
+    --tooltip-background: #FFF;
+    --tooltip-border-color: #888;
+    --tooltip-border-width: 1px;
+    --tooltip-hight-arrow: 1em;
+    --tooltip-text-color: #666;
+  
+    --effect-over: 0 0 0 .75em #AAA2;
+    --effect-active: 0 0 0 .75em #5F03;
+    --value: 50;
+    --pos: calc(var(--thumb-radius) + .01 * var(--value) *(100% - var(--thumb-diameter)));
+  
+    position: relative;
+    max-width: 30em;
+    margin: 2em auto;
+    text-align: center;
+    font-size: 1.25em;
+  }
+
+  .slider-tooltip {
+    display: block;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 1.75em;
+    margin-left: calc(var(--pos) + var(--track-border-width));
+    padding: .25em 0.5em;
+    min-width: 2em;
+    border: var(--tooltip-border-width) solid var(--tooltip-border-color);
+    border-radius: 5px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--tooltip-text-color);
+    background-color: var(--tooltip-background);
+    box-shadow: 0 .25em .75em #0006;
+    transition: .25s;
+    translate: calc( -50%);
+  }
+  .slider-tooltip::after {
+    content: "";
+    position: absolute;
+    top: calc(100% + var(--tooltip-border-width));
+    left: 50%;
+    width: var(--tooltip-hight-arrow);
+    height: var(--tooltip-hight-arrow);
+    border: inherit;
+    border-top: none;
+    border-left: none;
+    background-color: inherit;
+    box-shadow: none;
+    transform: translate(-50%,-50%) rotate(45deg);
+  }
+  .slider-range {
+    display: block;
+    -webkit-appearance: none;
+    box-sizing: content-box;
+    width: 100%;
+    height: var(--track-height);
+    margin: 0;
+    border: var(--track-border-width) solid var(--track-border-color);
+    border-radius: var(--track-height);
+    font-size: inherit;
+    outline: none;
+    background: #ECECEC;
+    background-image: var(--track-background);
+    background-position: 0 center;
+    background-repeat: no-repeat;
+    background-size: var(--pos) var(--track-height);
+    box-shadow: 0 0 1em #DCDCDC;
+    cursor: pointer;
+  }
+  .slider-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    width: var(--thumb-diameter);
+    height: var(--thumb-diameter);
+    border: var(--thumb-border);
+    border-radius: 50%;
+    background: var(--thumb-background);
+    box-shadow: 0 0 .5em #888;
+    cursor: ew-resize;
+  }
+  .slider-range::-moz-range-thumb {
+    box-sizing: border-box;
+    width: var(--thumb-diameter);
+    height: var(--thumb-diameter);
+    border: var(--thumb-border);
+    border-radius: 50%;
+    background: var(--thumb-background);
+    box-shadow: 0 0 .5em #888;
+    cursor: ew-resize;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: var(--effect-over);
+  }
+  input[type="range"]::-moz-range-thumb:hover {
+    box-shadow: var(--effect-over);
+  }
+  input[type=range]:focus {
+    outline: 3px dashed #4B8FE8;
+    outline-offset: .5em;
+  }
+  input[type=range]:active {
+    outline: none;
+  }
+  /*-- custom class --*/
+  .slider-green {
+    --thumb-border: 2px solid #FFF;
+    --thumb-background: #7CC34C;
+    --track-background: linear-gradient(#96BA52, #E2FCE2);
+    --tooltip-background: #FFE;
+    --tooltip-border-color: #080;
+    --tooltip-text-color: #4A0;
+    --effect-over: 0 0 0 .75em #4A02;
+    --effect-active: 0 0 0 .75em #5F03;
+  }
+  .slider-red {
+    --thumb-border: 2px solid #FFF;
+    --thumb-background: #FF4C4C;
+    --track-background: linear-gradient(#BA5252, #FCE2E2);
+    --tooltip-background: #FFFAFA;
+    --tooltip-border-color: #800;
+    --tooltip-text-color: #A04;
+    --effect-over: 0 0 0 .75em #A042;
+    --effect-active: 0 0 0 .75em #F053;
+  }
+  .slider-blue {
+    --thumb-border: 2px solid #FFF;
+    --thumb-background: #4C7CC3;
+    --track-background: linear-gradient(#5296BA, #E2E2FC);
+    --tooltip-background: #FAFAFF;
+    --tooltip-border-color: #008;
+    --tooltip-text-color: #04A;
+    --effect-over: 0 0 0 .75em #04A2;
+    --effect-active: 0 0 0 .75em #05F;
+  }

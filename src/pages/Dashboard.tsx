@@ -335,7 +335,7 @@ const Dashboard = () => {
             <h3 className="font-bold mb-4 text-lg md:text-2xl">
               {criteria.title} ({criteria.maxPoints} điểm)
             </h3>
-            <div className="space-y-4 sm:space-y-10">
+            <div className="space-y-4 sm:space-y-7">
               {Object.entries(criteria.items).map(([key, item]) => (
                 <div key={key} className="flex flex-col md:flex-row md:items-end space-y-2 md:space-y-0 md:space-x-4">
                   <label className="md:w-2/3 text-sm md:text-base">

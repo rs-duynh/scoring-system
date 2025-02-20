@@ -25,7 +25,7 @@ const Slider = ({ min, max, value, onChange, disabled }) => {
   }, [min, max]);
 
   // Update tooltip and slider when value changes
-  const [currentValue, setCurrentValue] = useState(0);
+  const [, setCurrentValue] = useState(0);
   useEffect(() => {
     const el = sliderRef.current;
     const parent = el.parentNode;

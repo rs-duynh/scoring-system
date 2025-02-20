@@ -47,7 +47,7 @@ html, body {
     color: var(--tooltip-text-color);
     background-color: var(--tooltip-background);
     box-shadow: 0 .25em .75em #0006;
-    transition: .25s;
+    transition: .125s;
     translate: calc( -50%);
   }
   .slider-tooltip::after {

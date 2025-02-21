@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api from "../utils/axios";
-import Slider from '../components/Slider';
-import '../assets/css/styles.css';
+import Slider from "../components/Slider";
+import "../assets/css/styles.css";
 
 // Add style to the component's head
 const getRangeColor = (value: number, max: number) => {
@@ -65,39 +65,41 @@ const rangeStyles = `
   }
 `;
 
-
 const SCORING_CRITERIA = {
   branding: {
     title: "Dấu hiệu nhận diện thương hiệu",
     maxPoints: 20,
     items: {
       uniformity: {
-        label: "Trên 50% nhân vật mặc đồng phục hoặc đeo thẻ nhân viên xuất hiện",
-        maxScore: 10
+        label:
+          "Trên 50% nhân vật mặc đồng phục hoặc đeo thẻ nhân viên xuất hiện",
+        maxScore: 10,
       },
       props: {
         label: "Có sử dụng vật phẩm nhận diện như sổ tay, ly nước,...",
-        maxScore: 10
-      }
-    }
+        maxScore: 10,
+      },
+    },
   },
   content: {
     title: "Nội dung video",
     maxPoints: 30,
     items: {
       introduction: {
-        label: "Có giới thiệu, tôn vinh về công ty, slogan, văn hóa bộ phận của mình",
-        maxScore: 10
+        label:
+          "Có giới thiệu, tôn vinh về công ty, slogan, văn hóa bộ phận của mình",
+        maxScore: 10,
       },
       theme: {
         label: "Liên quan chủ đề Unbreakable 17 và chủ đề về ngành IT.",
-        maxScore: 10
+        maxScore: 10,
       },
       creativity: {
-        label: "Nội dung truyền tải: độc đáo, sáng tạo, thẩm mỹ, hài hước, trao đi nhiều giá trị,...",
-        maxScore: 10
-      }
-    }
+        label:
+          "Nội dung truyền tải: độc đáo, sáng tạo, thẩm mỹ, hài hước, trao đi nhiều giá trị,...",
+        maxScore: 10,
+      },
+    },
   },
   technical: {
     title: "Kỹ thuật",
@@ -105,39 +107,41 @@ const SCORING_CRITERIA = {
     items: {
       videoEffect: {
         label: "Hiệu ứng video ấn tượng, chuyển cảnh hợp lý, mượt mà",
-        maxScore: 5
+        maxScore: 5,
       },
       videoQuality: {
         label: "Video rõ nét, cảnh quay, nhân vật rõ ràng, màu sắc đẹp",
-        maxScore: 5
+        maxScore: 5,
       },
       audioQuality: {
         label: "Âm thanh rõ nét, có sự cân nhắc nhạc nền phù hợp",
-        maxScore: 5
-      }
-    }
+        maxScore: 5,
+      },
+    },
   },
   ai: {
     title: "Ứng dụng AI",
     maxPoints: 20,
     items: {
       imageQuality: {
-        label: "AI - cải thiện chất lượng hình ảnh (rõ nét, thẩm mỹ, màu sắc, chuyển động...)",
-        maxScore: 5
+        label:
+          "AI - cải thiện chất lượng hình ảnh (rõ nét, thẩm mỹ, màu sắc, chuyển động...)",
+        maxScore: 5,
       },
       audioQuality: {
         label: "AI - cải thiện chất lượng âm thanh (lồng tiếng, điều chỉnh...)",
-        maxScore: 5
+        maxScore: 5,
       },
       scriptIdea: {
         label: "AI - hỗ trợ lên ý tưởng kịch bản, câu thoại, nội dung",
-        maxScore: 5
+        maxScore: 5,
       },
       creativity: {
-        label: "AI - sáng tạo đột phá, không trùng lặp với các nội dung phổ biến",
-        maxScore: 5
-      }
-    }
+        label:
+          "AI - sáng tạo đột phá, không trùng lặp với các nội dung phổ biến",
+        maxScore: 5,
+      },
+    },
   },
   presentation: {
     title: "Thuyết trình",
@@ -145,18 +149,18 @@ const SCORING_CRITERIA = {
     items: {
       speaking: {
         label: "Giọng nói rõ ràng, âm lượng phù hợp, tốc độ vừa phải",
-        maxScore: 5
+        maxScore: 5,
       },
       confidence: {
         label: "Người thuyết trình tự tin, có tương tác với khán giả",
-        maxScore: 5
+        maxScore: 5,
       },
       timing: {
         label: "Thông điệp rõ ràng, tập trung, không lan man",
-        maxScore: 5
-      }
-    }
-  }
+        maxScore: 5,
+      },
+    },
+  },
 };
 
 const Dashboard = () => {
@@ -321,7 +325,13 @@ const Dashboard = () => {
 
     return `${baseStyle} bg-gray-200`;
   };
-
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+  }, []);
   const renderScoreInputs = () => {
     if (!selectedTeam) return null;
 
@@ -331,13 +341,19 @@ const Dashboard = () => {
     return (
       <div className="space-y-6">
         {Object.entries(SCORING_CRITERIA).map(([category, criteria]) => (
-          <div key={category} className="border border-gray-400 px-3 py-8 rounded">
+          <div
+            key={category}
+            className="border border-gray-400 px-3 py-8 rounded"
+          >
             <h3 className="font-bold mb-4 text-lg md:text-2xl">
               {criteria.title} ({criteria.maxPoints} điểm)
             </h3>
             <div className="space-y-20 sm:space-y-1">
               {Object.entries(criteria.items).map(([key, item]) => (
-                <div key={key} className="flex flex-col md:flex-row md:items-end space-y-2 md:space-y-0 md:space-x-4">
+                <div
+                  key={key}
+                  className="flex flex-col md:flex-row md:items-end space-y-2 md:space-y-0 md:space-x-4"
+                >
                   <label className="md:w-2/3 text-sm md:text-base">
                     - {item.label}
                   </label>
@@ -346,11 +362,7 @@ const Dashboard = () => {
                     max={item.maxScore}
                     value={teamScores[category][key]}
                     onChange={(e: any) =>
-                      handleScoreChange(
-                        category,
-                        key,
-                        parseInt(e.target.value)
-                      )
+                      handleScoreChange(category, key, parseInt(e.target.value))
                     }
                     disabled={teamScores.submitted}
                   />
@@ -359,7 +371,35 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
-        <div className="text-center">
+        <div className="text-center d-flex">
+          <button
+            onClick={handlePrevTeam}
+            className={`w-1. md:w-1/8 h-12 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ${
+              Object.keys(scores).indexOf(selectedTeam) === 0
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            disabled={Object.keys(scores).indexOf(selectedTeam) === 0}
+          >
+            Prev
+          </button>
+          {isMobile && (
+            <button
+              onClick={handleNextTeam}
+              className={`w-1. md:w-1/8 h-12 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ${
+                Object.keys(scores).indexOf(selectedTeam) ===
+                Object.keys(scores).length - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={
+                Object.keys(scores).indexOf(selectedTeam) ===
+                Object.keys(scores).length - 1
+              }
+            >
+              Next
+            </button>
+          )}
           <button
             onClick={handleSubmitClick}
             className="w-full md:w-1/4 h-20 text-white text-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg  px-5 py-2.5 text-center me-2 mb-2"
@@ -367,6 +407,23 @@ const Dashboard = () => {
           >
             {teamScores.submitted ? "Đã chấm" : "Chấm điểm"}
           </button>
+          {!isMobile && (
+            <button
+              onClick={handleNextTeam}
+              className={`w-1. md:w-1/8 h-12 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ${
+                Object.keys(scores).indexOf(selectedTeam) ===
+                Object.keys(scores).length - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={
+                Object.keys(scores).indexOf(selectedTeam) ===
+                Object.keys(scores).length - 1
+              }
+            >
+              Next
+            </button>
+          )}
         </div>
       </div>
     );
@@ -501,9 +558,25 @@ const Dashboard = () => {
     );
   };
 
+  const handlePrevTeam = () => {
+    const teamIds = Object.keys(scores);
+    const currentIndex = teamIds.indexOf(selectedTeam);
+    if (currentIndex > 0) {
+      setSelectedTeam(teamIds[currentIndex - 1]);
+    }
+  };
+
+  const handleNextTeam = () => {
+    const teamIds = Object.keys(scores);
+    const currentIndex = teamIds.indexOf(selectedTeam);
+    if (currentIndex < teamIds.length - 1) {
+      setSelectedTeam(teamIds[currentIndex + 1]);
+    }
+  };
+
   return (
     <div className="p-4 max-w-full">
-       <style>{rangeStyles}</style>
+      <style>{rangeStyles}</style>
       <h1 className="text-gray-900 text-6xl dark:text-white text-center my-10 font-black">
         CHẤM ĐIỂM
       </h1>

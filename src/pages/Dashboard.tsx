@@ -164,7 +164,7 @@ const SCORING_CRITERIA = {
 };
 
 const Dashboard = () => {
-  const [selectedTeam, setSelectedTeam] = useState<string>("Team 1");
+  const [selectedTeam, setSelectedTeam] = useState<string>("BIZSYSTEM");
   const [scores, setScores] = useState<any>({});
   const user = useSelector((state: any) => state.auth.user);
 
@@ -174,7 +174,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (Object.keys(scores).length > 0 && !selectedTeam) {
-      setSelectedTeam("Team 1");
+      setSelectedTeam("BIZSYSTEM");
     }
   }, [scores]);
 
@@ -560,6 +560,7 @@ const Dashboard = () => {
 
   const handlePrevTeam = () => {
     const teamIds = Object.keys(scores);
+    console.log("🚀 ~ handlePrevTeam ~ teamIds:", teamIds)
     const currentIndex = teamIds.indexOf(selectedTeam);
     if (currentIndex > 0) {
       setSelectedTeam(teamIds[currentIndex - 1]);

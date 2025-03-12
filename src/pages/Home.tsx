@@ -3,21 +3,22 @@ import QRCode from 'react-qr-code';
 const Home = () => {
   // Lấy current URL của website
   const loginUrl = `${window.location.origin}/login`;
-
+  const isMobile = window.innerWidth <= 768;
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Scan QR Code to Login</h1>
-        <div className="p-4 bg-white">
+    <div className="bg-custom flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="rounded-lg shadow-md mt-50">
+        <div className="p-3 bg-white boxShadow">
           <QRCode
             value={loginUrl}
-            size={256}
-            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            size={128}
+            style={{ height: "auto", maxWidth: isMobile ? "200px" : "240px", width: isMobile ? "200px"  : "240px" }}
           />
+          <span> </span>
+          <span> </span>
+          <span> </span>
+          <span> </span>
         </div>
-        <p className="mt-4 text-center text-gray-600">
-          Scan mã QR code để truy cập trang đăng nhập
-        </p>
+       
       </div>
     </div>
   );
